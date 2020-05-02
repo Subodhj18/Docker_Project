@@ -1,4 +1,4 @@
-# Docker Project using Joomla
+# Docker Project 
 This is the final project using Docker to set-up a WebApp called Joomla. I will explain you the whole process that has been done for creating the WebApp .
 ## What's Joomla :-
 
@@ -38,18 +38,18 @@ Remember
 The file name should always be docker-compose.yml.
 For reference you can visit to the website: https://docs.docker.com/compose/install/
 
-# Version:
+### Version:
 I have used V3(version 3) for docker-compose because it's easy to compose than the other versions.
 
-# Volumes set-up:
+### Volumes set-up:
 If you want to make your data permanent then you have to use docker valume. We make our data permanent because if we quit the container then all the data inside container will be destroyed. This means, due to any reason if our container gets terminated our data will not loose.
-# Environment:
+### Environment:
 There are many images in Docker which needs some pre-defined environment variables to run. That's why we need to pass these variables.
 
-# Dependencies:
+### Dependencies:
 For running Joomla it needs MySQL database server to store the files.
 
-# Ports:
+### Ports:
 For running the WebApp we have to expose our container to a specific port. WebApp can only be accessible outside the system if we provide it a specific port.
 
 ## 6. Docker-compose up:
