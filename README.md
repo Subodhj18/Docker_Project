@@ -1,35 +1,61 @@
-What's Joomla :-
+# Docker Project using Joomla
+This is the final project using Docker to set-up a WebApp called Joomla. I will explain you the whole process that has been done for creating the WebApp .
+## What's Joomla :-
 
 Joomla is a free and open-source content management system (CMS) for publishing web content. It is built on a model–view–controller web application framework that can be used independently of the CMS. Joomla is written in PHP, uses object-oriented programming (OOP) techniques and software design patterns, stores data in a MySQL, MS SQL, or PostgreSQL database, and includes features such as page caching, RSS feeds, printable versions of pages, news flashes, blogs, search, and support for language internationalization.
 
+## 1. Pre-configurations:
+You should have an OS installed in your system. In that OS you should have to install Docker
+Here I am using RedHat Enterprise Linux OS and I have installed Docker Community Edition in it.
 
-How to use this image :-
-  $ docker run --name some-joomla --link some-mysql:mysql -d joomla
+## 2. Set-Up & Requirements:
+Disable Filrewall: Disabling firewall is not a good choice but, whenever you try to run any network based service then the firewall may block it and the service won't work properly. So, you have to disable firewall for implementing network based services to system.
+Use the following command to stop firewall systemctl stop firewalld
+Use the following code to disable the firewall permanently until you start it systemctl disable firewalld
+You can check the status of firewall by command systemctl status firewalld
+Use the following command to start firewall systemctl start firewalld
 
-The following environment variables are also honored for configuring your Joomla instance:
+## 3. Run Docker:
+For moving towards the project we have to enable docker service in the system so that we can use it. To start docker, use command systemctl start docker You can use this command to enable docker permanently systemctl enable docker You can check the status of docker by command systemctl status docker To stop docker, use command systemctl stop docker
 
--e JOOMLA_DB_HOST=... (defaults to the IP and port of the linked mysql container)
+## 3. Downloading required images:
+Pulling MySQL Image:
+Use docker pull mysql:5.7 to download the mysql version 5.7 image to use as a database server.
+Pulling Joomla Image:
+Use docker pull joomla:3.9-php7.2-apache to download the Joomla Image in which php and apache server is already preconfigured.
 
--e JOOMLA_DB_USER=... (defaults to "root")
+To know more about MySQL Image go to this page: https://hub.docker.com/_/mysql
+To know more about Joomla Image go to this page: https://hub.docker.com/_/joomla
 
--e JOOMLA_DB_PASSWORD=... (defaults to the value of the MYSQL_ROOT_PASSWORD environment variable from the linked mysql container)
+## 4. Setting up MySQL:
+Use the code given below and it will create a user with a database inside Your MySQL Server. docker run -it -e MYSQL_ROOT_PASSWORD=(password of your choice) -e MYSQL_USER=(username you have given) -e MYSQL_PASSWORD=(password you have given) -e MYSQL_DATABASE=(name of the database) --name joomladb mysql:5.7
 
--e JOOMLA_DB_NAME=... (defaults to "joomla")
+You can see your database is created or not by using the client software known as MySQL Client Software yum install mysql
 
-If the JOOMLA_DB_NAME specified does not already exist on the given MySQL server, it will be created automatically upon startup of the joomla container, provided that the JOOMLA_DB_USER specified has the necessary permissions to create it.
+## 5. Docker-Compose:
+Docker compose software can be configured by using command vim docker-compose.yml
+Remember
+The file name should always be docker-compose.yml.
+For reference you can visit to the website: https://docs.docker.com/compose/install/
 
-If you'd like to be able to access the instance from the host without the container's IP, standard port mappings can be used:
+# Version:
+I have used V3(version 3) for docker-compose because it's easy to compose than the other versions.
 
-$ docker run --name some-joomla --link some-mysql:mysql -p 8080:80 -d joomla
+# Volumes set-up:
+If you want to make your data permanent then you have to use docker valume. We make our data permanent because if we quit the container then all the data inside container will be destroyed. This means, due to any reason if our container gets terminated our data will not loose.
+# Environment:
+There are many images in Docker which needs some pre-defined environment variables to run. That's why we need to pass these variables.
 
-Then, access it via http://localhost:8080 or http://host-ip:8080 in a browser.
+# Dependencies:
+For running Joomla it needs MySQL database server to store the files.
 
-If you'd like to use an external database instead of a linked mysql container, specify the hostname and port with JOOMLA_DB_HOST along with the password in JOOMLA_DB_PASSWORD and the username in JOOMLA_DB_USER (if it is something other than root):
+# Ports:
+For running the WebApp we have to expose our container to a specific port. WebApp can only be accessible outside the system if we provide it a specific port.
 
-$ docker run --name some-joomla -e JOOMLA_DB_HOST=10.1.2.3:3306 \
+## 6. Docker-compose up:
+For docker compose up, use command docker-compose up to complete the setup.
 
-    -e JOOMLA_DB_USER=... -e JOOMLA_DB_PASSWORD=... -d joomla
-
-... via docker stack deploy or docker-compose
-
-As given in docker-compose.yml file
+## 7. Running Joomla WebApp:
+Open the browser and type localhost:80 or localhost in the address bar and you will be able to see your Joomla WebApp.
+Note:
+If you want to use any other port then you have to mention it in your docker-compose file.
